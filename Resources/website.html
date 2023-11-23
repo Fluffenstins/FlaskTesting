@@ -1,0 +1,67 @@
+<html>
+<head>
+<style>
+.myDiv {
+  border: 3px solid #73AD21;
+  background-color: lightblue;
+  text-align: center;
+}
+.gradyDiv {
+  position: relative;
+  left: 60px;
+  top: 60px;
+  background-color: white;
+  text-align: left;
+}
+.fixedAlert {
+  position: fixed;
+  left: 60px;
+  top: 60px;
+}
+div.myDiv {
+  column-count: 3;
+}
+</style>
+</head>
+<body>
+
+<div class="myDiv">
+  <h2>This is a heading in a div element This is a heading in a div element</h2>
+  <p>This is some text in a div element.</p>
+  <p>This is a new paragraph!</p>
+</div>
+<div class="gradyDiv">
+  <h2>This is a heading in a div element</h2>
+  <p>This is some text in a div element.</p>
+  <p>This is a new paragraph!</p>
+</div>
+  
+<div class="gradyDiv">
+  <h2>This is a heading in a div element</h2>
+  <p>This is some text in a div element.</p>
+  <p>This is a new paragraph!</p>
+</div>
+<div class="gradyDiv">
+  <h2>This is a heading in a div element</h2>
+  <p>This is some text in a div element.</p>
+  <p>This is a new paragraph!</p>
+</div>
+<div class="gradyDiv">
+  <h2>This is a heading in a div element</h2>
+  <p>This is some text in a div element.</p>
+  <p>This is a new paragraph!</p>
+</div>
+<div class="fixedAlert" id="fixedAlertID">
+  <h2>Alert!</h2>
+  <p>This is a fixed alert!</p>
+</div>
+
+<script>
+const fixed = document.getElementById("fixedAlertID");
+const a = 1;
+const b = 3;
+fixed.innerHTML = `My First JavaScript ${b}`;
+</script>
+
+</body>
+</html>
