@@ -1,7 +1,15 @@
-from flask import Flask
+from flask import Flask, make_response
+from markupsafe import escape
+from flask import request
+from GraphAPI import MSDrive
 
 app = Flask(__name__)
+global drive
 
+drive = MSDrive()
+
+drive.meta_remote = True
+drive.getMeta()
 
 @app.route("/")
 def hello_world():
@@ -38,6 +46,24 @@ def root():
         text = file.read()
     return text
 
+@app.route("/search/<search_inp>")
+def search(search_inp):
+    cookie = request.cookies.get('username')
+    print(cookie)
+    search_inp = escape(search_inp)
+    return f"Hello, {search_inp}"
+
+@app.route("/login")
+def login():
+    html = "hello"
+    ret = make_response(html)
+    ret.set_cookie("username", 'Grady')
+    return ret
+
+@app.route("/meta")
+def meta():
+    return '<br>'.join([i for i in drive.meta])
+
 
 if __name__ == '__main__':
-    app.run(host='192.168.2.10', port=2000, debug=False)
+    app.run(host='192.168.2.10', port=80, debug=False)
