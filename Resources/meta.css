@@ -1,0 +1,25 @@
+.main {
+background: #E1FADA;
+position: fixed;
+left:0px; top:70px; right:0; bottom:0;
+margin: 50px 50px 50px 50px;
+padding: 50px 50px 50px 50px;
+font-size: 2vw;
+}
+.top {
+z-index: 2;
+background: #2b60b5;
+color: #ffffff;
+position: fixed;
+left:0; right:0; top:0;
+height: 70px;
+padding: 10px 10px 10px 10px;
+}
+.left {
+z-index: 2;
+background: #DDDDDD;
+position: fixed;
+left:0; top:92px; bottom: 0;
+width: 0px;
+title:"mouseover";
+}

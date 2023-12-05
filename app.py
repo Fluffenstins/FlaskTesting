@@ -2,6 +2,7 @@ from flask import Flask, make_response
 from markupsafe import escape
 from flask import request
 from GraphAPI import MSDrive
+from time import time
 
 app = Flask(__name__)
 global drive
@@ -10,59 +11,75 @@ drive = MSDrive()
 
 drive.meta_remote = True
 drive.getMeta()
+drive.last_meta_update = time()
 
-@app.route("/")
+@app.route("/hello-world")
 def hello_world():
     return """<html>
 <body>
 
-<h2>JavaScript in Body</h2>
-
 <h2 id="demo"></h2>
-
 
 </body>
 
 <script type="text/javascript" src="https://form.jotform.com/jsform/233024658564055"></script>
 
 <script>
-document.getElementById("demo").innerHTML = "My First JavaScript";
+document.getElementById("demo").innerHTML = "Testing";
 </script>
 
 </html> 
 """
 
 
-@app.route("/test")
-def wowow():
-    with open('Resources/website.html') as file:
-        text = file.read()
-    return text
+@app.route("/")
+def java():
+    with open("Resources/meta.html") as file:
+        html = file.read()
+    return html
 
+@app.route("/meta.css")
+def meta_css():
+    with open("Resources/meta.css") as file:
+        html = file.read()
+    return html
 
-@app.route("/root")
-def root():
-    with open('Resources/root.html') as file:
-        text = file.read()
-    return text
-
-@app.route("/search/<search_inp>")
-def search(search_inp):
-    cookie = request.cookies.get('username')
-    print(cookie)
-    search_inp = escape(search_inp)
-    return f"Hello, {search_inp}"
-
-@app.route("/login")
-def login():
-    html = "hello"
-    ret = make_response(html)
-    ret.set_cookie("username", 'Grady')
-    return ret
 
 @app.route("/meta")
 def meta():
-    return '<br>'.join([i for i in drive.meta])
+    ret = ""
+    for nb, info in drive.meta.items():
+        job_nums = ', '.join(info['RPAT'] + info['ADM'])
+        ret += f"{nb} : {job_nums}<br>"
+    return ret
+
+
+@app.route("/test", methods=['POST'])
+def test():
+    if time() - drive.last_meta_update > 60:
+        print(f"Getting new meta...")
+        drive.getMeta()
+        drive.last_meta_update = time()
+    drive.getMeta()
+    query = request.json['query']
+    jobs = get_matching_jobs(query)
+    ret = []
+    for i in jobs:
+        ret.append(f"{i['folder name']}")
+
+    return '<br>'.join([str(i) for i in ret])
+
+
+def get_matching_jobs(query):
+    query = query.lower()
+    ret = []
+    for nb, info in drive.meta.items():
+        to_check = [info['folder name'], nb, info['job type']] + info['RPAT'] + info['ADM']
+        for name in to_check:
+            if name.lower().find(query) != -1:
+                ret.append(info)
+                break
+    return ret
 
 
 if __name__ == '__main__':

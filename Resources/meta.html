@@ -1,0 +1,24 @@
+<head><link href="meta.css" rel="stylesheet" type="text/css"></head>
+<body>
+<div class="top">NuBuild Job Directory</div>
+<div class="left"></div>
+<div class="main" id='demo'>
+<p id="prompt">Job Info:</p>
+<p><input type='text' name='job_query' id='job_query'/></p>
+<p><input type='submit' value='Search' onclick="loadDoc()"/></p>
+<p id=search_output></p>
+</div>
+</body>
+
+<script>
+function loadDoc() {
+  const xhttp = new XMLHttpRequest();
+  xhttp.onload = function() {
+    document.getElementById("search_output").innerHTML = this.responseText;
+  }
+  xhttp.open("POST", "/test");
+  xhttp.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+  x = JSON.stringify({"query": document.getElementById("job_query").value});
+  xhttp.send(x);
+}
+</script>
